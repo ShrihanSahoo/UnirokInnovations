@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unirok Innovations</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        unirokDark: '#121212',
+                        unirokGold: '#D4AF37',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Optional: Framer Motion / animations. For simplicity, we use minimal custom CSS animations -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #121212; color: #f3f4f6; }
+        .fade-in { animation: fadeIn 0.8s ease-in forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .nav-link { position: relative; transition: color 0.3s; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0;
+            background-color: #D4AF37; transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        
+        /* Gold Accent borders and glows */
+        .gold-border { border-color: #D4AF37; }
+        .hover-glow:hover { box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Global Navigation -->
+    <nav class="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <!-- Logo Section -->
+            <a href="{{ url_for('index') }}" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full border-2 border-unirokGold flex items-center justify-center font-bold text-unirokGold text-xl group-hover:bg-unirokGold group-hover:text-black transition-colors duration-300">
+                    UI
+                </div>
+                <span class="text-xl font-bold tracking-widest uppercase text-white">Unirok</span>
+            </a>
+            
+            <!-- Links -->
+            <div class="hidden md:flex gap-8 items-center text-sm uppercase tracking-wide">
+                <a href="{{ url_for('index') }}" class="nav-link hover:text-unirokGold mix-blend-screen">Home</a>
+                <a href="{{ url_for('about') }}" class="nav-link hover:text-unirokGold">About</a>
+                <a href="{{ url_for('contact') }}" class="nav-link hover:text-unirokGold">Contact / Quote</a>
+                <!-- Admin login hidden link or icon can go here, but usually hidden for anon users -->
+            </div>
+            
+            <!-- Mobile Menu Placeholder -->
+            <div class="md:hidden">
+                <button class="text-unirokGold p-2 border border-unirokGold rounded">Menu</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="max-w-4xl mx-auto mt-4 px-4 w-full z-40 relative">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="p-4 mb-4 text-sm rounded bg-unirokDark border {{ 'border-green-500 text-green-300' if category == 'success' else 'border-red-500 text-red-300' }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="bg-black border-t border-white/10 py-12 mt-16 mt-auto">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold text-unirokGold mb-4 uppercase tracking-widest">Unirok Innovations</h3>
+                <p class="text-gray-400 text-sm">Highly reputed distributor and dealer of premium building materials.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4 uppercase">Quick Links</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="{{ url_for('about') }}" class="hover:text-unirokGold transition-colors">About Us</a></li>
+                    <li><a href="{{ url_for('contact') }}" class="hover:text-unirokGold transition-colors">Request Quote</a></li>
+                    <li><a href="{{ url_for('admin_login') }}" class="hover:text-white transition-colors">Client/Admin Portal</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4 uppercase">Contact</h4>
+                <p class="text-gray-400 text-sm">contact@unirokinnovations.com<br>+91 1234567890</p>
+                <div class="flex gap-4 mt-4">
+                    <!-- Social placeholders -->
+                    <div class="w-8 h-8 rounded bg-gray-800 hover:bg-unirokGold transition cursor-pointer"></div>
+                    <div class="w-8 h-8 rounded bg-gray-800 hover:bg-unirokGold transition cursor-pointer"></div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto px-6 mt-12 pt-6 border-t border-white/10 text-center text-xs text-gray-600">
+            &copy; 2026 Unirok Innovations. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
